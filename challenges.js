@@ -238,20 +238,45 @@ function dfs(tree) {
 
   var currentNode;
   var children;
-  var queue = [tree];
+  var stack = [tree];
 
-  while (queue.length > 0) {
-    currentNode = queue.shift();
+  while (stack.length > 0) {
+    currentNode = stack.pop();
     children = currentNode.children;
 
     children && children.reverse().forEach(function (child) {
-      queue.unshift(child);
+      stack.push(child);
     });
 
     console.log(currentNode.value);
   };
 
 };
+
+/*
+*
+* recursive DFS
+*/
+function recursiveDfs(node) {
+
+  var children = node.children || [];
+  if (children.length) {
+    node.children.forEach(function(child){
+      recursiveDfs(child);
+    });
+  }
+
+  console.log(node.value);
+
+  return;
+
+};
+
+/*
+* NB: When using DFS and BFS on a graph, you must keep track of the 
+* visited nodes to prevent infinite loops
+*/
+
 
 /*
 * Convert a roman numeral string to an integer
@@ -439,3 +464,101 @@ function knapsackUnlimited(maxWeight, values, weights){
 
   return fn(maxWeight);
 }
+
+/*
+* Mergesort
+*/
+function mergeSort(arr){
+
+  function merge(arr1, arr2) {
+    var i = 0;
+    var j = 0;
+    var mergedArr = [];
+
+    while (i < arr1.length && j < arr2.length) {
+      if (arr1[i] <= arr2[j]){
+        mergedArr.push(arr1[i]);
+        i++;
+      } else {
+        mergedArr.push(arr2[j]);
+        j++;
+      }
+    };
+
+    mergedArr = mergedArr.concat(arr1.slice(i));
+    mergedArr = mergedArr.concat(arr2.slice(j));
+    return mergedArr;
+  };
+
+  if (arr.length === 1){
+    return arr;
+  }
+
+  var subArr1 = mergeSort(arr.slice(0, Math.floor(arr.length/2)));
+  var subArr2 = mergeSort(arr.slice(Math.floor(arr.length/2), arr.length));
+
+  return merge(subArr1, subArr2);
+
+};
+
+// Given a carpet with colord spots, find the original color of the carpet
+function findOrigColor(carpet){
+
+  function dfs(array, i, j){
+
+    // current cell
+    var cell = array[i][j];
+
+    // delete cell from unvisited dict, to mark as visited
+    delete unvisited[[i,j].toString()];
+
+    // if next cell exists, is unvisited and is of same color, continue searching there
+    if (Array.isArray(array[i+1]) 
+        && (array[i+1][j] === cell) 
+        && unvisited[[i+1,j].toString()]) {
+
+      dfs(array, i+1, j);
+    };
+
+    // if next cell exists, is unvisited and is of same color, continue searching there
+    if (array[i][j+1] === cell
+        && unvisited[[i,j+1].toString()]) {
+
+      dfs(array, i, j+1);
+    };
+
+
+  };
+
+  var unvisited = {};
+  var num = {0: 0, 1:0};
+
+  // mark each cell unvisited
+  carpet.forEach(function(row, i){
+    row.forEach(function(cell, j){
+      unvisited[[i, j].toString()] = true;
+    });
+  });
+
+  while (Object.keys(unvisited).length > 0) {
+
+    // retrieve the i and j of the next unvisited cell
+    var ij = Object.keys(unvisited)
+              .shift()
+              .toString()
+              .split(',')
+              .map(function(i){return parseInt(i)});
+
+    var i = ij[0];
+    var j = ij[1];
+
+    var cell = carpet[i][j];
+
+    num[cell] += 1;
+
+    dfs(carpet, i, j);
+
+  }
+
+  return num;
+};

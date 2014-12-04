@@ -150,3 +150,27 @@ function createPage () {
   request.send('data=' + JSON.stringify({name:'name'}));
 };
 
+function MyThing () {
+
+    this.basicThing = 'basic';
+    this.thing = 'thing';
+}
+
+MyThing.prototype = {
+
+  printThing : function () {console.log(this.thing)}
+
+};
+
+
+MyOtherThing = function () {
+  MyThing.apply(this);
+  this.thing = 'otherthing'
+
+}
+
+MyOtherThing.prototype = new MyThing();
+MyOtherThing.prototype.printThing = function(){
+  MyThing.prototype.printThing.call(this);
+  MyThing.prototype.printThing.call(this);
+};
