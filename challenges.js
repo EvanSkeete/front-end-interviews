@@ -13,7 +13,7 @@ var countSteps = (function () {
       return 0;
     }
 
-    if (typeof memo[numStairs] !== 'number') { 
+    if (typeof memo[numStairs] !== 'number') {
       memo[numStairs] = fn(numStairs - 3) + fn(numStairs - 2) + fn(numStairs - 1);
     }
 
@@ -84,7 +84,7 @@ function permute(string) {
   n = 0 -> ''
   n = 1 -> ()
   n = 2 -> (()), ()()
-  n = 3 -> ()(()), (()()), ((())), ()()(), (())(), ()()()  
+  n = 3 -> ()(()), (()()), ((())), ()()(), (())(), ()()()
 */
 function makeParens(n) {
 
@@ -107,11 +107,11 @@ function makeParens(n) {
 
 }
 
-/* 
- Given an input array and another array that describes a new index for each 
- element, mutate the input array so that each element ends up in their new 
- index. Discuss the runtime of the algorithm and how you can be sure there 
- won't be any infinite loops. 
+/*
+ Given an input array and another array that describes a new index for each
+ element, mutate the input array so that each element ends up in their new
+ index. Discuss the runtime of the algorithm and how you can be sure there
+ won't be any infinite loops.
 */
 function mutateArray (inputArray, indexArray) {
 
@@ -122,7 +122,7 @@ function mutateArray (inputArray, indexArray) {
   }
 
   var tmp;
-  var sorted = false; 
+  var sorted = false;
 
   while (!sorted) {
 
@@ -140,7 +140,7 @@ function mutateArray (inputArray, indexArray) {
   return inputArray;
 }
 
-/* 
+/*
  Implemenent a function to find the square root of a number, without using
  math.sqrt();
 
@@ -148,7 +148,7 @@ function mutateArray (inputArray, indexArray) {
 */
 function sqrt (n) {
 
-  var start = 0; 
+  var start = 0;
   var end = n/2;
   var epsilon = 0.00001;
 
@@ -171,7 +171,7 @@ function sqrt (n) {
 }
 
 
-/* 
+/*
  Recursive array flattening function
 */
 function flattenArray (array) {
@@ -199,7 +199,7 @@ function flattenArray (array) {
 
 };
 
-/* 
+/*
  Array flattening function the clever(er?) way
 */
 function flattenArray2 (array) {
@@ -273,7 +273,7 @@ function recursiveDfs(node) {
 };
 
 /*
-* NB: When using DFS and BFS on a graph, you must keep track of the 
+* NB: When using DFS and BFS on a graph, you must keep track of the
 * visited nodes to prevent infinite loops
 */
 
@@ -301,10 +301,10 @@ function convertRoman (roman) {
     var val = key[char];
 
     result += (prevVal < val) ? val - 2 * prevVal : val;
-    
+
     prevVal = val;
   });
-  
+
   return result;
 };
 
@@ -340,9 +340,9 @@ function isPalindrome(string){
   var end = string.length - 1;
 
   while(string[start] === string[end]) {
-    
+
     if (start >= end) return true;
-    
+
     start++; end--;
   }
 
@@ -351,7 +351,7 @@ function isPalindrome(string){
 };
 
 /*
-* recursive is Palindrome 
+* recursive is Palindrome
 */
 
 function recursiveIsPalindrome(string) {
@@ -360,7 +360,7 @@ function recursiveIsPalindrome(string) {
     return true;
   } else {
     return (
-      (string[0] === string[string.length -1]) && 
+      (string[0] === string[string.length -1]) &&
       isPalindrome(string.slice(1, string.length - 1))
             );
   }
@@ -397,7 +397,7 @@ function findLCA(tree, node1, node2){
 /* Knapsack Problem
    What is the max value you can achieve by chosing items with values from
    the set `values` and weights from the set `weights`
-   One item can only be chosen once. 
+   One item can only be chosen once.
  */
 function knapsack (maxWeight, values, weights) {
 
@@ -423,7 +423,7 @@ function knapsack (maxWeight, values, weights) {
     return memo[i][w];
 
   };
-  
+
 
   return fn(weights.length-1, maxWeight);
 }
@@ -435,7 +435,7 @@ function knapsack (maxWeight, values, weights) {
  */
 function knapsackUnlimited(maxWeight, values, weights){
 
-  memo = [0]; //memo 
+  memo = [0]; //memo
 
   var fn = function (w) {
 
@@ -513,8 +513,8 @@ function findOrigColor(carpet){
     delete unvisited[[i,j].toString()];
 
     // if next cell exists, is unvisited and is of same color, continue searching there
-    if (Array.isArray(array[i+1]) 
-        && (array[i+1][j] === cell) 
+    if (Array.isArray(array[i+1])
+        && (array[i+1][j] === cell)
         && unvisited[[i+1,j].toString()]) {
 
       dfs(array, i+1, j);
@@ -562,3 +562,355 @@ function findOrigColor(carpet){
 
   return num;
 };
+
+/*In place reverse a sentence*/
+
+function inPlaceReverse(sentence){
+
+  sentence = sentence.split('');
+
+  function swap(arr, i, j){
+    var tmp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = tmp;
+  }
+
+  function reverseWord(arr, i, j){
+    while (i < j) {
+      swap(sentence, i, j);
+      i++; j--;
+    }
+  }
+
+  //reverse chars
+  var idxLast = sentence.length - 1;
+  var i = 0;
+  var j = idxLast;
+
+  reverseWord(sentence, i, j);
+
+
+  //reverse words
+  i = 0;
+  j = 0;
+
+  while (i < idxLast) {
+    while (sentence[j] !== ' ' && j !== idxLast + 1) {
+      j++;
+    }
+    reverseWord(sentence, i, j - 1);
+    j++;
+    i=j;
+  }
+
+  return sentence.join('');
+}
+//console.log(inPlaceReverse('this is a sentence'));
+
+/*
+  Given a 4X4 array of letters, find if a given word is present in the array
+  word can be present vertically, horizontally, diagonally
+*/
+
+//this could be coded better
+function findInGrid(grid, word){
+
+  function search(pos, dir, idx){
+    //console.log('pos', pos);
+    var same = grid[pos[0]][pos[1]] === word[idx];
+    console.log(same, grid[pos[0]][pos[1]], word[idx]);
+
+    if (idx === word.length - 1) {
+      return same;
+    } else {
+      pos[0] += dir[0];
+      pos[1] += dir[1];
+      idx ++;
+
+      if (pos[0] < 0 || pos[1] < 0 || pos[0] > len - 1 || pos[1] > len - 1) {
+        return false;
+      } else {
+        return same && search(pos, dir, idx);
+      }
+    }
+  }
+
+  //find all locations of first letter in grid
+  var i = 0,
+      j = 0,
+      startPositions = [],
+      len = grid.length;
+
+  for (i=0; i < len; i++) {
+    for (j=0; j < len; j++) {
+      if (grid[i][j] === word[0]){
+          startPositions.push([i,j]);
+      }
+    }
+  }
+
+  console.log(startPositions);
+  var found = false;
+
+  //perform BFS on each start letter
+  startPositions.forEach(function(startPos){
+    [-1,0,1].forEach(function(i){
+      [-1,0,1].forEach(function(j){
+        if(!(i === 0 && j === 0)){
+          //console.log('dir',[i,j]);
+          found = found || search(startPos.concat(), [i,j], 0);
+        }
+      });
+    });
+  });
+
+  return found;
+
+}
+
+/*
+  Given a list of words, return a list of lists of all anagrams grouped
+*/
+function groupAnagrams(list) {
+
+  function compare(a,b){
+    return a.val.localeCompare(b.val);
+  }
+
+  function compare2(a,b){
+    return a.localeCompare(b);
+  }
+
+  var i = 0,
+      j = 0,
+      k = 0;
+
+  var indexedList = list.map(function(val, idx){
+    return {'val': val, 'idx': idx}
+  });
+
+  indexedList.forEach(function(item){
+    item.val = item.val.split('').sort(compare2).join('');
+  });
+
+  indexedList.sort(compare);
+
+  var groups = [];
+
+  while (i < indexedList.length) {
+    groups.push([]);
+    while (j < indexedList.length && indexedList[i].val === indexedList[j].val) {
+      //console.log(i,j);
+      groups[k].push(list[indexedList[j].idx]);
+      j++;
+    }
+    k++;
+    i = j;
+  }
+
+  return groups;
+}
+
+//var groups = groupAnagrams(['trees', 'bike', 'cars', 'steer', 'arcs']);
+//console.log(groups);
+
+
+/*
+  Given an array where the value in each element represents the number of hops
+  you may take to the next destination. Detemine if you can make it to the last
+  element starting at the first.
+*/
+
+function canHopToEnd(arr){
+
+  function fn(idx){
+    console.log(idx);
+    if (idx === arr.length - 1) {
+      return true;
+    } else if (idx >= arr.length) {
+      return false;
+    } else if (arr[idx] === 0) {
+      return false;
+    }
+
+    var maxSteps = arr[idx];
+    console.log('maxSteps', maxSteps);
+
+    var madeIt = false;
+
+    for (var i=1; i<=maxSteps; i++){
+        madeIt = madeIt || fn(idx + i);
+    };
+
+    return madeIt;
+
+  }
+
+  return fn(0);
+}
+
+//console.log(canHopToEnd([1, 2, 0, 1, 0, 1,])); //false
+//console.log(canHopToEnd([1, 2, 3, 1, 0, 1,])); //true
+
+function topologicalSort(graph){
+
+  var visited = {};
+  var stack = [];
+
+  function postOrderDFS(node){
+
+    if (visited[node.val]) {
+      return;
+    }
+
+    for (key in node.edges) {
+      var neighbour = node.edges[key];
+      postOrderDFS(neighbour);
+    };
+
+    visited[node.val] = true;
+
+    stack.push(node);
+
+  }
+
+  for (key in graph) {
+
+    var node = graph[key];
+
+    if(!visited[node.val]){
+        postOrderDFS(node);
+    }
+
+  }
+
+  return stack.reverse();
+
+}
+
+
+// var nodes = {
+//  0: {val: 0},
+//  1: {val: 1},
+//  2: {val: 2},
+//  3: {val: 3},
+//  4: {val: 4},
+//  5: {val: 5},
+//  6: {val: 6}
+// }
+//
+// nodes[0].edges = {
+//   1: nodes[1],
+//   2: nodes[2],
+//   5: nodes[5]
+// };
+//
+// nodes[1].edges = {
+//   4: nodes[4]
+// };
+//
+// nodes[2].edges = {};
+//
+// nodes[3].edges = {
+//   2: nodes[2],
+//   4: nodes[4],
+//   5: nodes[5],
+//   6: nodes[6]
+// };
+//
+// nodes[4].edges = {};
+//
+// nodes[5].edges = {
+//   2: nodes[2]
+// };
+//
+// nodes[6].edges = {
+//   0: nodes[0],
+//   4: nodes[4]
+// };
+
+// var tSort = topologicalSort(nodes);
+// console.log(tSort);
+
+function tripletSort(triplets){
+
+  var graph = {};
+
+
+  //Make a graph out of the triplets
+  for (var i = 0; i < triplets.length; i++){
+    var triplet = triplets[i];
+
+    if (!graph[triplet[0]]) {
+      graph[triplet[0]] = {val: triplet[0], edges: {}}
+    }
+
+    for (var j = 0; j < triplet.length - 1; j++){
+      var current = triplet[j];
+      var next = triplet[j+1];
+
+      if (!graph[next]) {
+        graph[next] = {val: next, edges: {}}
+      }
+
+      graph[current].edges[next] = graph[next];
+
+    }
+  }
+
+  //Topogological sort on the graph
+  return topologicalSort(graph);
+
+}
+
+
+// var triplets = [
+//
+//   ['a','c','e'],
+//   ['b','d','f'],
+//   ['a','b','f'],
+//   ['c','d','e'],
+//   ['e','f']
+//
+// ];
+//
+// console.log(tripletSort(triplets));
+
+/*
+  Change from base 10 to any base up to 16
+*/
+function changeBase(dec, base){
+
+  var quotient = dec,
+      remainder = 0,
+      result = [],
+      map = {
+        0 : '0',
+        1 : '1',
+        2 : '2',
+        3 : '3',
+        4 : '4',
+        5 : '5',
+        6 : '6',
+        7 : '7',
+        8 : '8',
+        9 : '9',
+        10 : 'A',
+        11 : 'B',
+        12 : 'C',
+        13 : 'D',
+        14 : 'E',
+        15 : 'F'
+      }
+
+  while (quotient > 0) {
+    remainder = quotient % base;
+    result.push(map[remainder]);
+    quotient = Math.floor(quotient / base);
+  }
+
+  return result.reverse().join('');
+
+}
+
+//console.log(changeBase(3, 2))
